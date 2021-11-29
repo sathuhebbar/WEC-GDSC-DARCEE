@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <!-- Required by Bootstrap-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Loading the required Bootstrap CSS file -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Required by Bootstrap-->
+
+    <style>
+        .ui_text {
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .area_text {
+            font-family: 'Ubuntu Mono', monospace;
+        }
+
+        img {
+            height: 3%;
+            width: 3%;
+        }
+
+        .heading {
+            font-family: 'Ubuntu';
+            font-size: 250%;
+        }
+    </style>
+
+
+    <!-- Page title -->
+    <title> DARCEE </title>
+
+</head>
+
+<body>
+
+    <!-- Required by Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <!-- Required by Bootstrap-->
+
+    <!-- Title and logo -->
+    <div class="heading container-float bg-dark text-light text-center">
+        <img class="img-fluid" src="{{ url_for('static', filename='img/logo.png') }}">
+        DARCEE
+    </div>
+
+    <!-- The bar on top -->
+    <div class="d-flex container-float bg-dark">
+
+        <div class="d-flex align-self-center form-check form-switch">
+
+            <input onchange="dark_mode_change()" autocomplete="off" class="form-check-input m-2" type="checkbox"
+                id="dark_switch">
+
+            <label class="form-check-label m-2 text-light ui_text" for="dark_switch">Dark mode</label>
+
+        </div>
+
+        <button class="btn btn-success ms-auto m-2 ui_text text-light"> Save </button>
+
+    </div>
+
+    <!-- Full height div to house the form -->
+    <div class="d-flex m-3 vh-100 gap-5">
+
+        <!-- Left portion, source -->
+        <div class="d-flex flex-column w-50 h-100 gap-4">
+
+            <label class="ui_text">Source:</label>
+
+            <textarea id="source_area" name="source_code" form="submission" autocomplete="off"
+                class="form-control mt-2 h-100 area_text"></textarea>
+
+        </div>
+
+        <!-- Right portion, input, language selection and submit button -->
+        <div class="d-flex flex-column w-50 h-100 gap-4">
+
+            <label class="ui_text">Input (stdin):</label>
+
+            <textarea name="input" form="submission" autocomplete="off"
+                class="form-control mt-2 h-50 area_text"></textarea>
+
+            <!-- Language selection -->
+            <select class="form-select">
+
+                <option value="Python 3">Python 3</option>
+
+            </select>
+
+            <button type="submit" form="submission" class="btn btn-danger ui_text text-light">
+                Run >> </button>
+
+        </div>
+
+    </div>
+
+    <!-- Form that submits the source code for execution -->
+    <form action="/submit" id="submission" method="post"></form>
+
+    <!-- Functions to handle a few button clicks -->
+    <script src=" {{ url_for('static', filename='js/handlers.js') }}"></script>
+
+</body>
+
+</html>
