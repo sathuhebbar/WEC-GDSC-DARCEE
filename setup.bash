@@ -22,13 +22,7 @@ deactivate
 # Generate Dockerfile
 python gendockfile.py
 
-# Directory for docker
-cd docker
-
 # Create the required image
 docker build --tag darcee_executor_image .
-
-# Return
-cd ..
 
 #******* DOCKER SETUP **************

@@ -10,7 +10,7 @@ import json
 #  Run as user 'dummy'
 #  Working directory is the home directory of 'dummy'
 
-
+# Load configs
 with open('lang-config.json', 'r') as file:
     langs = json.load(file)
 
@@ -26,6 +26,6 @@ ls.append(s)
 
 ls += ["USER dummy", "WORKDIR /home/dummy"]
 
-with open('docker/Dockerfile', 'w') as dfile:
+with open('Dockerfile', 'w') as dfile:
     for x in ls:
         dfile.write(x + '\n')

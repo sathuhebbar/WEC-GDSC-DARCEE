@@ -13,5 +13,10 @@
 		"display": "Ruby",
 		"package": "ruby2.7",
 		"commands": ["ruby sourcecode"]
-	}
+	},
+    "cpp": {
+        "display": "C++",
+        "package": "build-essential",
+        "commands": ["mv sourcecode sourcecode.cpp", "g++ sourcecode.cpp -o binary", "./binary"]
+    }
 }

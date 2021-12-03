@@ -2,7 +2,10 @@ import flask
 import subprocess
 import json
 import sys
-import os
+import pathlib
+
+# SOME CONSTANTS
+TIMEOUT = 5
 
 # Our app
 app = flask.Flask(__name__)
@@ -35,22 +38,56 @@ def submit():
     # input from form
     ip, lang, src = frm['input'], frm['lang'], frm['source_code']
 
+    # Create the docker image
+    create_cmd = ["docker", "create", "-i", "--memory=256M", "--network", "none",
+                  "darcee_executor_image", "/bin/bash", "commands"]
+    cprocess = subprocess.run(create_cmd, stdout=subprocess.PIPE,
+                              encoding=sys.getdefaultencoding())
+
+    # We don't know the id of the container created
+    # The create command would have printed that to stdout
+    # The last character is a newline
+    cid = cprocess.stdout[:-1]
+
     # Write the source code
-    with open('docker/temp/sourcecode', 'w') as sfile:
+    with open('temp/' + cid + 'sourcecode', 'w') as sfile:
         sfile.write(src)
 
     # Write the commands corresponding to the language
-    with open('docker/temp/commands', 'w') as cfile:
-        cfile.write('cp /mnt/sourcecode .\n')
+    with open('temp/' + cid + 'commands', 'w') as cfile:
         for cmd in langs[lang]['commands']:
             cfile.write(cmd + '\n')
 
-    # Our docker command
-    cmd = ["docker", "run", "-i", "-v", os.getcwd() +"docker/temp:/mnt:", "--rm",
-           "darcee_executor_image", "/bin/bash", "/mnt/commands"]
+    # To prevent conflict, the source and commands files
+    # are prefixed with the container id
 
-    # Call the command!!!!
-    p = subprocess.run(cmd, input=ip, encoding=sys.getdefaultencoding(), stdout=subprocess.PIPE,
-                       stderr=subprocess.PIPE)
+    # Copying the source file and the set of commands
+    # to the home folder of dummy
+    subprocess.run(["docker", "cp", "temp/"+cid +
+                   "sourcecode", cid + ":/home/dummy/sourcecode"])
+    subprocess.run(["docker", "cp", 'temp/' + cid +
+                   'commands', cid + ":/home/dummy/commands"])
 
-    return flask.render_template('result.html', output=p.stdout, error=p.stderr)
+    # Clean-up the files
+    pathlib.Path('temp/' + cid + 'sourcecode').unlink()
+    pathlib.Path('temp/' + cid + 'commands').unlink()
+
+    # The key command
+    start_cmd = ["docker", "start", "-i", cid]
+
+    out, err = '', ''
+
+    # Start running the container!
+    try:
+        p = subprocess.run(start_cmd, input=ip, encoding=sys.getdefaultencoding(), stdout=subprocess.PIPE,
+                           stderr=subprocess.PIPE, timeout=TIMEOUT)
+        out, err = p.stdout, p.stderr
+
+    except subprocess.TimeoutExpired:
+        err = 'TIME LIMIT EXCEEDED'
+
+    # Delete the container
+    subprocess.run(["docker", "stop", cid])
+    subprocess.run(["docker", "container", "rm", cid])
+
+    return flask.render_template('result.html', output=out, error=err)
