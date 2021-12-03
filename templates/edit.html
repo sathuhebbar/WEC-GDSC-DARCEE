@@ -13,26 +13,19 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- Required by Bootstrap-->
 
+	<!-- Languages allowed -->
+	<meta id="langs" content="{{ langs }}">
+
+    <!-- Font preference (if the Fira family is present, use those fonts)-->
     <style>
-        .ui_text {
-            font-family: 'Ubuntu', sans-serif;
+        body {
+            font-family: 'Fira Sans';
         }
 
-        .area_text {
-            font-family: 'Ubuntu Mono', monospace;
-        }
-
-        img {
-            height: 3%;
-            width: 3%;
-        }
-
-        .heading {
-            font-family: 'Ubuntu';
-            font-size: 250%;
+        .code {
+            font-family: 'Fira Code';
         }
     </style>
-
 
     <!-- Page title -->
     <title> DARCEE </title>
@@ -43,29 +36,49 @@
 
     <!-- Required by Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
     <!-- Required by Bootstrap-->
 
-    <!-- Title and logo -->
-    <div class="heading container-float bg-dark text-light text-center">
-        <img class="img-fluid" src="{{ url_for('static', filename='img/logo.png') }}">
-        DARCEE
+    <!-- Title of the page -->
+    <div class="container-float bg-dark text-light text-center" style="font-size: 250%">
+        <strong> <em>DARCEE</em> </strong>
     </div>
 
     <!-- The bar on top -->
     <div class="d-flex container-float bg-dark">
 
-        <div class="d-flex align-self-center form-check form-switch">
+        <div class="d-flex">
+
+            <span class="text-light m-2" style="white-space: nowrap;">Font size:</span>
+
+            <select id="font_size_select" class="form-select m-2" autocomplete="off" style="height: 62%"
+                onchange="change_font_size()">
+                <option value="8">8 </option>
+                <option value="9">9 </option>
+                <option value="10">10 </option>
+                <option value="12">12 </option>
+                <option value="14">14 </option>
+                <option value="16" selected>16</option>
+                <option value="20">20 </option>
+                <option value="24">24 </option>
+                <option value="30">30</option>
+                <option value="36">36 </option>
+                <option value="42">42 </option>
+                <option value="56">56</option>
+            </select>
+
+        </div>
+
+        <div class="d-flex form-check form-switch ms-auto">
 
             <input onchange="dark_mode_change()" autocomplete="off" class="form-check-input m-2" type="checkbox"
                 id="dark_switch">
 
-            <label class="form-check-label m-2 text-light ui_text" for="dark_switch">Dark mode</label>
+            <label class="form-check-label m-2 text-light" for="dark_switch">Dark mode</label>
+
 
         </div>
-
-        <button class="btn btn-success ms-auto m-2 ui_text text-light"> Save </button>
 
     </div>
 
@@ -73,31 +86,41 @@
     <div class="d-flex m-3 vh-100 gap-5">
 
         <!-- Left portion, source -->
-        <div class="d-flex flex-column w-50 h-100 gap-4">
+        <div class="d-flex flex-column w-50 h-100 gap-3">
 
-            <label class="ui_text">Source:</label>
+            <div class="d-flex">
 
-            <textarea id="source_area" name="source_code" form="submission" autocomplete="off"
-                class="form-control mt-2 h-100 area_text"></textarea>
+                <span>Source:</span>
+
+                <button class="btn btn-primary ms-auto" onclick="copy_button('source_code')">Copy</button>
+
+            </div>
+
+
+            <textarea spellcheck="false" id="source_code" name="source_code" form="submission" autocomplete="off"
+                class="form-control code mt-2 h-100"></textarea>
 
         </div>
 
         <!-- Right portion, input, language selection and submit button -->
-        <div class="d-flex flex-column w-50 h-100 gap-4">
+        <div class="d-flex flex-column w-50 h-100 gap-3">
 
-            <label class="ui_text">Input (stdin):</label>
+            <div class="d-flex">
 
-            <textarea name="input" form="submission" autocomplete="off"
-                class="form-control mt-2 h-50 area_text"></textarea>
+                <span>Input:</span>
+
+                <button class="btn btn-primary ms-auto" onclick="copy_button('input')">Copy</button>
+
+            </div>
+
+            <textarea spellcheck="false" id="input" name="input" form="submission" autocomplete="off"
+                class="code form-control mt-2 h-50 "></textarea>
 
             <!-- Language selection -->
-            <select class="form-select">
-
-                <option value="Python 3">Python 3</option>
-
+            <select name="lang" form="submission" class="form-select">
             </select>
 
-            <button type="submit" form="submission" class="btn btn-danger ui_text text-light">
+            <button type="submit" form="submission" class="btn btn-danger text-light">
                 Run >> </button>
 
         </div>
@@ -107,7 +130,10 @@
     <!-- Form that submits the source code for execution -->
     <form action="/submit" id="submission" method="post"></form>
 
-    <!-- Functions to handle a few button clicks -->
+	<!-- Add the supported languages -->
+	<script src="{{ url_for('static', filename='js/lang-setup.js') }}"></script>
+
+    <!-- Functions for copy buttons and the switch -->
     <script src=" {{ url_for('static', filename='js/handlers.js') }}"></script>
 
 </body>

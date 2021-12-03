@@ -1,0 +1,17 @@
+{
+	"python2": {
+		"display": "Python 2",
+		"package": "python",
+		"commands": ["python2 sourcecode"]
+	},
+	"python3": {
+		"display": "Python 3",
+		"package": "python3",
+		"commands": ["python3 sourcecode"]
+	},
+	"ruby": {
+		"display": "Ruby",
+		"package": "ruby2.7",
+		"commands": ["ruby sourcecode"]
+	}
+}

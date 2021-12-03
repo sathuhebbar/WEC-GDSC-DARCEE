@@ -1,1 +1,0 @@
-python3 /mnt/source.py </mnt/input.txt >/mnt/output.txt 2>/mnt/error.txt

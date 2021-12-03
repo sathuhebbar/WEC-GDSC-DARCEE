@@ -13,23 +13,14 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- Required by Bootstrap-->
 
+    <!-- Font preference (if the Fira family is present, use those fonts)-->
     <style>
-        .ui_text {
-            font-family: 'Ubuntu', sans-serif;
+        body {
+            font-family: 'Fira Sans';
         }
 
-        .area_text {
-            font-family: 'Ubuntu Mono', monospace;
-        }
-
-        img {
-            height: 3%;
-            width: 3%;
-        }
-
-        .heading {
-            font-family: 'Ubuntu';
-            font-size: 250%;
+        .code {
+            font-family: 'Fira Code';
         }
     </style>
 
@@ -40,18 +31,22 @@
 
 <body>
 
-    <div class="heading container-float bg-dark text-light text-center">
-        <img class="img-fluid" src="{{ url_for('static', filename='img/logo.png') }}">
-        DARCEE
+    <!-- Required by Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+    <!-- Required by Bootstrap-->
+
+    <!-- Title of the page -->
+    <div class="container-float bg-dark text-light text-center" style="font-size: 250%">
+        <strong> <em>DARCEE</em> </strong>
     </div>
 
     <!-- The bar on top -->
     <div class="d-flex container-float bg-dark">
 
-        <button class="btn btn-primary m-2 ui_text text-light" onclick="history.back()">
+        <button class="btn btn-primary m-2 text-light" onclick="history.back()">
             &lt&lt Return </button>
-
-        <button class="btn btn-success ms-auto m-2 ui_text text-light"> Save </button>
 
     </div>
 
@@ -61,22 +56,38 @@
         <!-- Left portion, output -->
         <div class="w-50 h-100">
 
-            <label class="ui_text">Output:</label>
+            <div class="d-flex">
 
-            <textarea readonly autocomplete="off" class="form-control mt-2 h-100 area_text">{{ output }}</textarea>
+                <span>Output:</span>
+
+                <button class="btn btn-primary ms-auto" onclick="copy_button('output')">Copy</button>
+
+            </div>
+
+            <textarea id="output" spellcheck="false" readonly autocomplete="off"
+                class="form-control code mt-2 h-100 bg-light">{{ output }}</textarea>
 
         </div>
 
         <!-- Right portion, error -->
         <div class="w-50 h-100">
 
-            <label class="ui_text">Errors:</label>
+            <div class="d-flex">
 
-            <textarea readonly autocomplete="off" class="form-control mt-2 h-100 area_text">{{ error }}</textarea>
+                <span>Errors:</span>
 
+                <button class="btn btn-primary ms-auto" onclick="copy_button('errors')">Copy</button>
+
+            </div>
+
+            <textarea id="errors" spellcheck="false" readonly autocomplete="off"
+                class="form-control code mt-2 h-100 bg-light">{{ error }}</textarea>
         </div>
 
     </div>
+
+    <!-- Functions for copy buttons-->
+    <script src=" {{ url_for('static', filename='js/handlers.js') }}"></script>
 
 </body>
 

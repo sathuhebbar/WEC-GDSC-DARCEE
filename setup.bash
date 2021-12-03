@@ -1,6 +1,6 @@
 # THIS IS A ONE-TIME SETUP!
 
-#******* PYTHON SETUP**************
+#******* PYTHON SETUP **************
 
 # Set-up the python3 venv
 python3 -m venv darcee-env
@@ -14,9 +14,13 @@ pip3 install -r requirements.txt
 # Done with the VM
 deactivate
 
-#******* PYTHON SETUP**************
+#******* PYTHON SETUP **************
 
-#******* DOCKER SETUP**************
+
+#******* DOCKER SETUP **************
+
+# Generate Dockerfile
+python gendockfile.py
 
 # Directory for docker
 cd docker
@@ -27,4 +31,4 @@ docker build --tag darcee_executor_image .
 # Return
 cd ..
 
-#******* DOCKER SETUP**************
+#******* DOCKER SETUP **************
