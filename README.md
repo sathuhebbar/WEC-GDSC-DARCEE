@@ -5,6 +5,16 @@ DARCEE is a highly primitive code executor. As of now, we
 only support Python and Ruby. We will definitely improve DARCEE.
 Thank you!
 
+## Frameworks:
+We've used Flask and gunicorn here. The HTML file uses Bootstrap.
+Docker is used to create and manage containers.
+
+## Features:
+1. Can handle simple read-eval-print kind of code.
+2. Supports as many workers as the user desires.
+3. Four languages are supported as of now, but adding more is easy! Just edit
+   the lang-config json file , add the package set and the command to execute.
+4. Uses the debian:11 base container image
 
 ## Installation
 System Requirements: <br>
@@ -32,6 +42,13 @@ To stop the server,
 
 Some things:
   1. If the error stream shows a message resembling 'Process Killed',
-     you might be using too much memory.
+     you might be using too much memory. Also, lack of output may be
+     indicative of the program encountering some kind of error during
+     execution.
   2. The time limit is 5s. Memory limit is 256M. 
   3. Don't run nasty things, nasty things might happen!
+
+##Demo Video link:
+https://drive.google.com/file/d/199MATQPErSB9IkF9f4ffSfUGMyVCaEpd/view?usp=sharing
+
+<em> Thank you WEC NITK! </em>
